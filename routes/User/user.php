@@ -16,7 +16,7 @@ $api->version('v1', function ($api) {
         /*
          * JWT自带函数
          */
-        $api->get('/auth/user', [
+        $api->post('/auth/user', [
             'uses' => 'App\Http\Controllers\Auth\AuthController@getUser',
             'as' => 'api.auth.user',
         ]);

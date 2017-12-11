@@ -12,16 +12,17 @@ class RequestProtocolMiddleware
     {
         $requestData = $request->request->all();
 
-        $requestData = $this->callDataToJson($requestData);
-
-        $request->request = new ParameterBag($requestData);
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $requestData = $this->callDataToJson($requestData);
+            $request->request = new ParameterBag($requestData);
+        }
 
         return $next($request);
     }
 
     protected function callDataToJson($requestData)
     {
-        if (!empty($requestData['body']['sign_type']) && $requestData['body']['sign_type'] == 'base64') {
+        if ( !empty($requestData['body']['sign_type']) && $requestData['body']['sign_type'] == 'base64') {
             $requestData['call']['data'] = base64_decode($requestData['call']['data']);
         }
         $requestData = json_decode($requestData['call']['data'], true);
